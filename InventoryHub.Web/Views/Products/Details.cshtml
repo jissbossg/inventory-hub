@@ -1,0 +1,9 @@
+@model InventoryHub.Web.Dtos.ProductResponse
+@{ ViewData["Title"] = Model.Name; }
+
+<h1>@Model.Name</h1>
+<p class="sku">@Model.Sku — @Model.CategoryName</p>
+<p>Precio: @Model.Price.ToString("C")</p>
+<p>Stock: <span id="stock-@Model.Id">@Model.Stock</span></p>
+<p>Actualizado: @Model.UpdatedUtc.ToLocalTime()</p>
+<a href="/Products">← Volver</a>

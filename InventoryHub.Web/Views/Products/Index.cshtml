@@ -1,0 +1,42 @@
+@model InventoryHub.Web.ViewModels.ProductListViewModel
+@{ ViewData["Title"] = "Productos"; }
+
+<h1>Inventario</h1>
+
+<form method="get" asp-action="Index" class="toolbar">
+    <input name="search" value="@Model.Search" placeholder="Buscar…" />
+    <select name="categoryId">
+        <option value="">Todas las categorías</option>
+        @foreach (var c in Model.Categories)
+        {
+            <option value="@c.Id" selected="@(Model.CategoryId == c.Id)">@c.Name</option>
+        }
+    </select>
+    <button type="submit">Aplicar</button>
+</form>
+
+<div class="grid">
+    @foreach (var p in Model.Data.Items)
+    {
+        <article class="card" data-product-id="@p.Id">
+            <h3>@p.Name</h3>
+            <p class="sku">@p.Sku · @p.CategoryName</p>
+            <p class="price">@p.Price.ToString("C")</p>
+            <p class="stock">Stock: <span class="stock-value">@p.Stock</span></p>
+            <a class="link" href="/Products/Details/@p.Id">Detalles</a>
+            <button class="btn-restock" data-id="@p.Id">+10</button>
+        </article>
+    }
+</div>
+
+<div class="pager">
+    @if (Model.Data.Page > 1)
+    {
+        <a href="?page=@(Model.Data.Page - 1)&search=@Model.Search&categoryId=@Model.CategoryId">← Anterior</a>
+    }
+    <span>Página @Model.Data.Page / @Model.Data.TotalPages</span>
+    @if (Model.Data.Page < Model.Data.TotalPages)
+    {
+        <a href="?page=@(Model.Data.Page + 1)&search=@Model.Search&categoryId=@Model.CategoryId">Siguiente →</a>
+    }
+</div>
